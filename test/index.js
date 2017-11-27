@@ -14,6 +14,7 @@ const skipTests = [
     'enforceDescriptions',
     'extractSourceLocation',
     'moduleSourceName',
+    'additionalComponents',
     'icuSyntax',
     'removeDescriptions',
 ];
@@ -97,6 +98,27 @@ describe('options', () => {
         try {
             transform(path.join(fixtureDir, 'actual.js'), {
                 moduleSourceName: 'react-i18n',
+            });
+            assert(true);
+        } catch (e) {
+            console.error(e);
+            assert(false);
+        }
+
+        // Check message output
+        const expectedMessages = fs.readFileSync(path.join(fixtureDir, 'expected.json'));
+        const actualMessages = fs.readFileSync(path.join(fixtureDir, 'actual.json'));
+        assert.equal(trim(actualMessages), trim(expectedMessages));
+    });
+
+    it('can use additionalComponents', () => {
+        const fixtureDir = path.join(fixturesDir, 'additionalComponents');
+
+        try {
+            transform(path.join(fixtureDir, 'actual.js'), {
+                additionalComponents: [
+                    ['react-elements', 'FormattedMarkdown', 'FormattedNode'],
+                ],
             });
             assert(true);
         } catch (e) {

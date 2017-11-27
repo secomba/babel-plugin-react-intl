@@ -16,6 +16,11 @@ const fixtures = [
     ['moduleSourceName', {
         moduleSourceName: 'react-i18n',
     }],
+    ['additionalComponents', {
+        additionalComponents: [
+            ['react-elements', 'FormattedMarkdown', 'FormattedNode'],
+        ],
+    }],
 ];
 
 fixtures.forEach((fixture) => {

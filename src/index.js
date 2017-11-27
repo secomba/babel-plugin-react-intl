@@ -27,6 +27,10 @@ export default function ({types: t}) {
     function getModuleSourceName(opts) {
         return opts.moduleSourceName || 'react-intl';
     }
+    
+    function getAdditionalComponents(opts) {
+        return opts.additionalComponents;
+    }
 
     function evaluatePath(path) {
         const evaluated = path.evaluate();
@@ -158,7 +162,7 @@ export default function ({types: t}) {
         }
 
         messages.set(id, {id, description, defaultMessage, ...loc});
-    }
+    }    
 
     function referencesImport(path, mod, importedNames) {
         if (!(path.isIdentifier() || path.isJSXIdentifier())) {
@@ -166,6 +170,18 @@ export default function ({types: t}) {
         }
 
         return importedNames.some((name) => path.referencesImport(mod, name));
+    }
+
+    function referencesAdditionalImport(path, additionalComponents) {
+        if(Array.isArray(additionalComponents)) {
+            if(additionalComponents.some(it => !Array.isArray(it) || it.length < 2)) {
+                throw path.buildCodeFrameError(
+                    '[React Intl] Additional Components need to be an Array in form of `[ "moduleSourceName", "ComponentName" ]`'
+                ); 
+            }
+        return additionalComponents.some(([moduleSourceName, ...componentNames]) => referencesImport(path, moduleSourceName, componentNames))
+        }
+        return false;
     }
 
     function tagAsExtracted(path) {
@@ -231,8 +247,9 @@ export default function ({types: t}) {
 
                     return;
                 }
+                const additionalComponents = getAdditionalComponents(opts);
 
-                if (referencesImport(name, moduleSourceName, COMPONENT_NAMES)) {
+                if (referencesImport(name, moduleSourceName, COMPONENT_NAMES) || referencesAdditionalImport(name, additionalComponents)) {
                     const attributes = path.get('attributes')
                         .filter((attr) => attr.isJSXAttribute());
 
