@@ -42,7 +42,7 @@ If a message descriptor has a `description`, it'll be removed from the source af
 
 - **`moduleSourceName`**: The ES6 module source name of the React Intl package. Defaults to: `"react-intl"`, but can be changed to another name/path to React Intl.
 
-- **`additionalComponents`**: Components that should be extracted as well, can be used for Wrapping components. Value is an Array of arrays where the first value defines `moduleSourceName` and the rest defines `componentNames` e.g. `[['react-elements', 'FormattedMarkdown']]`. Defaults to `null` 
+- **`additionalComponents`**: Components that should be extracted as well, can be used for Wrapping components. Value is an Array of arrays where the first value defines `moduleSourceName` and the rest defines `componentNames` e.g. `[{ moduleSourceName: 'react-elements', componentNames: 'FormattedMarkdown'}]`. Defaults to `null` 
 
 ### Via Node API
 

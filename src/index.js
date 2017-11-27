@@ -172,14 +172,25 @@ export default function ({types: t}) {
         return importedNames.some((name) => path.referencesImport(mod, name));
     }
 
+    function isAdditionalComponent(it) {
+        return typeof it === 'object' &&
+            typeof it.moduleSourceName === 'string' &&
+            Array.isArray(it.componentNames) &&
+            it.componentNames.length > 0;
+    }
+
     function referencesAdditionalImport(path, additionalComponents) {
         if(Array.isArray(additionalComponents)) {
-            if(additionalComponents.some(it => !Array.isArray(it) || it.length < 2)) {
+            if(!additionalComponents.every(isAdditionalComponent)) {
                 throw path.buildCodeFrameError(
-                    '[React Intl] Additional Components need to be an Array in form of `[ "moduleSourceName", "ComponentName" ]`'
+                    '[React Intl] Additional Components need to be in shape of '+
+                    '`[{"moduleSourceName": "moduleName", "componentNames": ["ComponentName"]}]`' +
+                    `but got:\n ${JSON.stringify(additionalComponents, null, 2)}`
                 ); 
             }
-        return additionalComponents.some(([moduleSourceName, ...componentNames]) => referencesImport(path, moduleSourceName, componentNames))
+            return additionalComponents.some(
+                ({moduleSourceName, componentNames}) => referencesImport(path, moduleSourceName, componentNames)
+            );
         }
         return false;
     }

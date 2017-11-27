@@ -18,7 +18,10 @@ const fixtures = [
     }],
     ['additionalComponents', {
         additionalComponents: [
-            ['react-elements', 'FormattedMarkdown', 'FormattedNode'],
+            {
+                moduleSourceName: 'react-elements',
+                componentNames: ['FormattedMarkdown', 'FormattedNode'],
+            }
         ],
     }],
 ];

@@ -117,7 +117,10 @@ describe('options', () => {
         try {
             transform(path.join(fixtureDir, 'actual.js'), {
                 additionalComponents: [
-                    ['react-elements', 'FormattedMarkdown', 'FormattedNode'],
+                    {
+                        moduleSourceName: 'react-elements',
+                        componentNames: ['FormattedMarkdown', 'FormattedNode'],
+                    }
                 ],
             });
             assert(true);
