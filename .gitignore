@@ -1,4 +1,5 @@
 node_modules
 *.log
-lib
+# TODO remove when adding PR to main
+# lib  
 test/fixtures/*/actual.json
