@@ -172,6 +172,18 @@ export default function ({types: t}) {
         return importedNames.some((name) => path.referencesImport(mod, name));
     }
 
+    function referencesScopedImport(path, mod, importedNames) {    
+        const scopeName = path.node.object && path.node.object.name;
+        const componentName = path.node.property && path.node.property.name;
+    
+        if (!scopeName || !componentName) {
+            return false;
+        }
+    
+        return importedNames.some((name) => name === `${scopeName}.${componentName}`);
+    }
+
+      
     function isAdditionalComponent(it) {
         return typeof it === 'object' &&
             typeof it.moduleSourceName === 'string' &&
@@ -189,7 +201,12 @@ export default function ({types: t}) {
                 ); 
             }
             return additionalComponents.some(
-                ({moduleSourceName, componentNames}) => referencesImport(path, moduleSourceName, componentNames)
+                ({moduleSourceName, componentNames}) => {
+                    const scoped = componentNames.filter((name) => name.includes('.'));
+                    const other = componentNames.filter((name) => !name.includes('.'));
+            
+                    return referencesImport(path, moduleSourceName, other) || referencesScopedImport(path, moduleSourceName, scoped);
+                }
             );
         }
         return false;
