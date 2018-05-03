@@ -15,6 +15,7 @@ const skipTests = [
     'extractSourceLocation',
     'moduleSourceName',
     'additionalComponents',
+    'scoped',
     'icuSyntax',
     'removeDescriptions',
 ];
@@ -118,8 +119,32 @@ describe('options', () => {
             transform(path.join(fixtureDir, 'actual.js'), {
                 additionalComponents: [
                     {
-                        moduleSourceName: 'react-elements',
+                        moduleSourceName: 'react-elements/intl',
                         componentNames: ['FormattedMarkdown', 'FormattedNode'],
+                    },
+                ],
+            });
+            assert(true);
+        } catch (e) {
+            console.error(e);
+            assert(false);
+        }
+
+        // Check message output
+        const expectedMessages = fs.readFileSync(path.join(fixtureDir, 'expected.json'));
+        const actualMessages = fs.readFileSync(path.join(fixtureDir, 'actual.json'));
+        assert.equal(trim(actualMessages), trim(expectedMessages));
+    });
+
+    it('can use scoped additional components', () => {
+        const fixtureDir = path.join(fixturesDir, 'scoped');
+
+        try {
+            transform(path.join(fixtureDir, 'actual.js'), {
+                additionalComponents: [
+                    {
+                        moduleSourceName: 'react-elements/scoped',
+                        componentNames: ['Formatted.Node', 'Formatted.Markdown'],
                     }
                 ],
             });

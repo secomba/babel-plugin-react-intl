@@ -10,7 +10,7 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _intl = require('react-elements/intl');
+var _scoped = require('react-elements/scoped');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20,26 +20,26 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Foo = function (_Component) {
-    _inherits(Foo, _Component);
+var ScopedFoo = function (_Component) {
+    _inherits(ScopedFoo, _Component);
 
-    function Foo() {
-        _classCallCheck(this, Foo);
+    function ScopedFoo() {
+        _classCallCheck(this, ScopedFoo);
 
-        return _possibleConstructorReturn(this, (Foo.__proto__ || Object.getPrototypeOf(Foo)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (ScopedFoo.__proto__ || Object.getPrototypeOf(ScopedFoo)).apply(this, arguments));
     }
 
-    _createClass(Foo, [{
+    _createClass(ScopedFoo, [{
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_intl.FormattedMarkdown, {
+                _react2.default.createElement(_scoped.Formatted.Markdown, {
                     id: 'foo.bar.baz',
                     defaultMessage: 'Hello __World__!'
                 }),
-                _react2.default.createElement(_intl.FormattedNode, {
+                _react2.default.createElement(_scoped.Formatted.Node, {
                     id: 'foo.bar.biff',
 
                     defaultMessage: 'Hello Nurse!'
@@ -48,7 +48,7 @@ var Foo = function (_Component) {
         }
     }]);
 
-    return Foo;
+    return ScopedFoo;
 }(_react.Component);
 
-exports.default = Foo;
+exports.default = ScopedFoo;

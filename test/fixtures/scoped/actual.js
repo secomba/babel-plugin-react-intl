@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
-import {FormattedMarkdown, FormattedNode} from 'react-elements/intl';
+import {Formatted} from 'react-elements/scoped';
 
-export default class Foo extends Component {
+export default class ScopedFoo extends Component {
     render() {
         return (
             <div>
-                <FormattedMarkdown
+                <Formatted.Markdown
                     id='foo.bar.baz'
                     defaultMessage='Hello __World__!'
                     description='The default message.'
                 />
 
-                <FormattedNode                
+                <Formatted.Node                
                     id="foo.bar.biff"
                     description={`
 Trimmed multi

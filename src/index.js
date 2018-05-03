@@ -119,8 +119,10 @@ export default function ({types: t}) {
         return descriptor;
     }
 
-    function storeMessage({id, description, defaultMessage}, path, state) {
+    function storeMessage(descriptor, path, state) {
         const {file, opts} = state;
+        const {id, description} = descriptor;
+        const defaultMessage = descriptor.defaultMessage.trim();
 
         if (!(id && defaultMessage)) {
             throw path.buildCodeFrameError(

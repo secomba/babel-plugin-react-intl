@@ -19,9 +19,17 @@ const fixtures = [
     ['additionalComponents', {
         additionalComponents: [
             {
-                moduleSourceName: 'react-elements',
+                moduleSourceName: 'react-elements/intl',
                 componentNames: ['FormattedMarkdown', 'FormattedNode'],
-            }
+            }            
+        ],
+    }],
+    ['scoped', {
+        additionalComponents: [
+            {
+                moduleSourceName: 'react-elements/scoped',
+                componentNames: ['Formatted.Node', 'Formatted.Markdown'],
+            }        
         ],
     }],
 ];
@@ -43,7 +51,7 @@ fixtures.forEach((fixture) => {
     });
 
     let messages = JSON.stringify(metadata['react-intl'].messages, null, 2);
-
+    
     fs.writeFileSync(`${baseDir}/${name}/expected.js`, `${code}\n`);
     fs.writeFileSync(`${baseDir}/${name}/expected.json`, `${messages}\n`);
 });
