@@ -32,6 +32,14 @@ const fixtures = [
             }        
         ],
     }],
+    ['namespaceImport', {
+        additionalComponents: [
+            {
+                moduleSourceName: 'react-elements/namespace',
+                componentNames: ['Formatted.Node', 'Formatted'],
+            }        
+        ],
+    }],
 ];
 
 fixtures.forEach((fixture) => {

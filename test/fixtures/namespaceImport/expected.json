@@ -1,0 +1,12 @@
+[
+  {
+    "id": "foo.bar.baz",
+    "description": "The default message.",
+    "defaultMessage": "Hello __World__!"
+  },
+  {
+    "id": "foo.bar.biff",
+    "description": "Trimmed multi\nline message",
+    "defaultMessage": "Hello Nurse!"
+  }
+]

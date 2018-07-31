@@ -164,26 +164,39 @@ export default function ({types: t}) {
         }
 
         messages.set(id, {id, description, defaultMessage, ...loc});
-    }    
+    }  
 
     function referencesImport(path, mod, importedNames) {
+        const scoped = importedNames.filter(name => name.includes('.')).map(name=> name.split('.'));
+        const standard = importedNames.filter(name => !name.includes('.'));
         if (!(path.isIdentifier() || path.isJSXIdentifier())) {
+            if(path.isJSXMemberExpression()) {
+                const obj = path.get('object');                
+                const property = path.get('property');
+                if(obj.isJSXIdentifier() && obj.referencesImport(mod)) {
+                    if(property.isJSXIdentifier()) {                
+                        return standard.some((name) => property.node.name === name) || 
+                            scoped.some(([scope, name]) => property.node.name === name && obj.node.name === scope);
+                    }                  
+                }
+                if(obj.isJSXMemberExpression()) {
+                    if(obj.get('object').referencesImport(mod)) {
+                        const scopeProperty = obj.get('property')
+                        if(scopeProperty.isJSXIdentifier()) {
+                            return scoped.some(([scope, name]) =>
+                                property.node.name === name && scopeProperty.node.name === scope
+                            );
+                        }
+                    }
+                }
+            }
             return false;
         }
-
+        
         return importedNames.some((name) => path.referencesImport(mod, name));
     }
 
-    function referencesScopedImport(path, mod, importedNames) {    
-        const scopeName = path.node.object && path.node.object.name;
-        const componentName = path.node.property && path.node.property.name;
-    
-        if (!scopeName || !componentName) {
-            return false;
-        }
-    
-        return importedNames.some((name) => name === `${scopeName}.${componentName}`);
-    }
+
 
       
     function isAdditionalComponent(it) {
@@ -203,11 +216,8 @@ export default function ({types: t}) {
                 ); 
             }
             return additionalComponents.some(
-                ({moduleSourceName, componentNames}) => {
-                    const scoped = componentNames.filter((name) => name.includes('.'));
-                    const other = componentNames.filter((name) => !name.includes('.'));
-            
-                    return referencesImport(path, moduleSourceName, other) || referencesScopedImport(path, moduleSourceName, scoped);
+                ({moduleSourceName, componentNames}) => {                
+                    return referencesImport(path, moduleSourceName, componentNames);
                 }
             );
         }

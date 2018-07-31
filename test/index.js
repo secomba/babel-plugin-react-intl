@@ -16,6 +16,7 @@ const skipTests = [
     'moduleSourceName',
     'additionalComponents',
     'scoped',
+    'namespaceImport',
     'icuSyntax',
     'removeDescriptions',
 ];
@@ -145,6 +146,30 @@ describe('options', () => {
                     {
                         moduleSourceName: 'react-elements/scoped',
                         componentNames: ['Formatted.Node', 'Formatted.Markdown'],
+                    }
+                ],
+            });
+            assert(true);
+        } catch (e) {
+            console.error(e);
+            assert(false);
+        }
+
+        // Check message output
+        const expectedMessages = fs.readFileSync(path.join(fixtureDir, 'expected.json'));
+        const actualMessages = fs.readFileSync(path.join(fixtureDir, 'actual.json'));
+        assert.equal(trim(actualMessages), trim(expectedMessages));
+    });
+
+    it('can use namespace imported additional components', () => {
+        const fixtureDir = path.join(fixturesDir, 'namespaceImport');
+
+        try {
+            transform(path.join(fixtureDir, 'actual.js'), {
+                additionalComponents: [
+                    {
+                        moduleSourceName: 'react-elements/namespace',
+                        componentNames: ['Formatted.Node', 'Formatted'],
                     }
                 ],
             });
