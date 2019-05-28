@@ -1,8 +1,19 @@
+# This repo was migrated to the [monorepo](https://github.com/formatjs/formatjs/tree/master/packages/intl-locales-supported)
+
 # babel-plugin-react-intl
 
-Extracts string messages for translation from modules that use [React Intl][].
+![travis](https://travis-ci.org/formatjs/babel-plugin-react-intl.svg?branch=master)
 
-_**Note:** This Babel plugin works with React Intl v2.x, and **1.x of this plugin works with Babel 5, 2.x works with Babel 6**._
+Extracts string messages for translation from modules that use [React Intl][].
+## Dependencies
+
+### React Intl
+This Babel plugin works with React Intl v2.x
+
+### Babel
+- **3.x** of this plugin works with Babel 7
+- **2.x** works with Babel 6
+- **1.x** works with Babel 5
 
 ## Installation
 
@@ -51,12 +62,18 @@ If a message descriptor has a `description`, it'll be removed from the source af
     }
   ]
   ```
+- **`overrideIdFn`**: A function with the signature `(id: string, defaultMessage: string, description: string|object) => string` which allows you to override the ID both in the extracted javascript and messages.
+
+- **`removeDefaultMessage`**: Remove `defaultMessage` field in generated js after extraction. 
+
+- **`additionalComponentNames`**: Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`. **NOTE**: By default we check for the fact that `FormattedMessage` & `FormattedHTMLMessage` are imported from `moduleSourceName` to make sure variable alias works. This option does not do that so it's less safe.
+
 ### Via Node API
 
 The extract message descriptors are available via the `metadata` property on the object returned from Babel's `transform()` API:
 
 ```javascript
-require('babel-core').transform('code', {
+require('@babel/core').transform('code', {
   plugins: ['react-intl']
 }) // => { code, map, ast, metadata['react-intl'].messages };
 ```
