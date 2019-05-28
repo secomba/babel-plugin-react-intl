@@ -7,7 +7,7 @@ export default class Foo extends Component {
         return (
             <FormattedMessage
                 id='foo.bar.baz'
-                defaultMessage='Hello, {foo.baz}!'
+                defaultMessage={'Hello, {foo.baz}!'}
                 description='Broken message'
                 values={{
                     foo: {baz: 'biff'},
